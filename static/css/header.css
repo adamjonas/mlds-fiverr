@@ -1,0 +1,69 @@
+#visitor {
+    color: #000;
+}
+
+#visitor table {
+    color: #333;
+    font-size: 11px;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+#visitor th {
+    text-align: left;
+    color: #666;
+    border-bottom: 1px solid #999;
+    margin-bottom: 5px;
+}
+
+#visitor tr:hover {
+    background-color: #ff6;
+    cursor: pointer;
+}
+
+#visitor td {
+    padding: 2px 0px 2px 5px;
+}
+
+#visitor td.count {
+    text-align: right;
+}
+
+#sidebar {
+    font-size: 11px;
+    width: 250px;
+    float: left;
+    margin-right: 20px;
+}
+
+#details {
+    width: 670px;
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+#txt_search {
+    font-size: 14px;
+}
+
+#btn_search {
+    font-size: 10px;
+    width: 60px;
+    height: 22px;
+}
+
+#details td {
+    border-bottom: 1px solid #CCC;
+}
+
+tr.selected_row td {
+    background-color: #6f6;
+}
+
+p.tech {
+    font-size: 10px;
+    color: #999;
+}

@@ -1,0 +1,54 @@
+{% load flatblock_tags %}
+{% load static %}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <title>{% flatblock 'site.title' 3600 %}</title>
+
+    <link rel="stylesheet" type="text/css" href="http://mldraft.com/css/mlds.css" />
+
+    <link rel="stylesheet" href="{% static 'css/chosen.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/header.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <!--<link rel="stylesheet" type="text/css" href="{% static 'jquery.ui.ufd-0.5/css/ufd-base.css' %}" />-->
+    <!--<link rel="stylesheet" type="text/css" href="{% static 'jquery.ui.ufd-0.5/css/custom/custom.css' %}" />-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.jqplot.css' %}" />
+
+    <link rel="shortcut icon" href="http://mldraft.com/favicon.ico" />
+
+    {% block header_style %}{% endblock %}
+
+</head>
+<body>
+
+<center>
+<div id="wrapper">
+
+    <div id="header">
+        <div class="banner">
+            <a href="http://members.mldraft.com"><img src="http://mldraft.com/images/banner.jpg" border="0"></a>
+        </div>
+
+        <div class="clear"></div>
+
+    </div>
+
+    <div class="clear"></div>
+
+    {% block content %}{% endblock %}
+
+
+    <div class="footer">
+
+        {% flatblock 'site.copyright' 3600 %} Web App by <a href="http://brooklynsoftworks.com">Brooklyn Softworks</a>.
+
+    </div>
+
+</div>
+</center>
+
+</body>
+</html>

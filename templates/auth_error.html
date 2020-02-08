@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% load acefs_extras %}
+{% load flatblock_tags %}
+
+{% block content %}
+<div class="inner_column" style="width: 200px;">
+
+    {% flatblock 'autherror.text' 3600 %}
+
+</div>
+
+
+<div class="clear"></div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+
+<div class="app" id="visitor">
+
+    <div id="sidebar">
+
+
+    </div>
+
+    <div id="details">
+
+
+    </div>
+
+    <div class="clear"></div>
+
+</div>
+
+<div class="app" id="app_output">
+    <div id="throbber" style="display: none;"><img src="{% static 'images/red_throbber.gif' %}" /></div>
+    <div id="output_placeholder" style="display: none;"></div>
+</div>
+    
+{% endblock %}
+
+
+{% block scripts %}
+
+<script type="text/javascript">
+$(document).ready(function()
+{
+    $('#sidebar').load('/visitor_list/1');
+
+    $('#sidebar tr').live('click', function(e)
+    {
+
+        $('#sidebar tr').removeClass('selected_row');
+        $(this).addClass('selected_row');
+
+        var id = $(this).find('span.visitor_id').html();
+        $('#details').load('/visitor_detail/' + id);
+
+    });
+
+    $('#sidebar a').live('click', function(e)
+    {
+
+        e.preventDefault();
+        $('#sidebar').load($(this).attr('href'));
+
+    });
+
+    $('#btn_search').live('click', function(e)
+    {
+
+        var term = $('#txt_search').val();
+        $('#sidebar').load('/visitor_list/1?term=' + term);
+
+    });
+
+    $('tr.scenario_row').live('click', function()
+    {
+
+        $('#details tr.scenario_row').removeClass('selected_row');
+        $(this).addClass('selected_row');
+
+        var params = {
+            college: $(this).attr('val_college'),
+            alt: $(this).attr('val_alt'),
+            sec: $(this).attr('val_sec'),
+            pick: $(this).attr('val_pick'),
+            pos: $(this).attr('val_pos'),
+            status: $(this).attr('val_status')
+        };
+
+        $('div#output_placeholder').slideUp('fast');
+        $('div#output_placeholder').html('');
+        $('div#throbber').slideDown('fast');
+        $('div#output_placeholder').load('/output?skip_log=YES', params, function()
+        {
+
+            $('div#throbber').slideUp('fast');
+            $('div#output_placeholder').slideDown('fast', function()
+            {
+                render_plot();
+            });
+        });
+    });
+
+});
+</script>
+
+{% endblock %}
