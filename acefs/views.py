@@ -30,7 +30,7 @@ def _hash_helper(input):
 
 def _get_or_create_visitor(request):
 
-	if request.GET.get('skip_log', False):
+	if request.GET.get('skip_log', True):
 		return None
 
 	user_agent = request.META['HTTP_USER_AGENT']
@@ -83,9 +83,9 @@ def main(request):
 
 	colleges = College.objects.all().order_by('school')
 	occupations = DOLSalary.objects.all().order_by('occupation')
-	draft_cells = DRAFT_CELLS
-	positions = POSITIONS
-	statuses = STATUSES
+	draft_cells = [DraftCell(idx+1) for idx in range (0,26)]
+	positions = [Position(x) for x in range(len(POSITION_CHOICES))]
+	statuses = [Status(x) for x in range(len(STATUS_CHOICES))]
 
 	if request.method == 'POST':
 
@@ -135,42 +135,37 @@ def main(request):
 @csrf_exempt
 def output(request):
 
-	college = request.POST.get('college')
-	alt = request.POST.get('alt')
-	sec = request.POST.get('sec')
-	pick = request.POST.get('pick')
-	pos = request.POST.get('pos')
-	status = request.POST.get('status')
+	college = request.POST.get('college', False)
+	alt = request.POST.get('alt', False)
+	sec = request.POST.get('sec', False)
+	pick = request.POST.get('pick', False)
+	pos = request.POST.get('pos', False)
+	status = request.POST.get('status', False)
 
-	acefsm = AcefsModel(college=college, alt=alt, secondary=sec, expected_pick=pick, position=pos, status=status)
+	m = AcefsModel(college=college, alt=alt, secondary=sec, expected_pick=pick, position=pos, status=status)
 
 	visitor = _get_or_create_visitor(request)
-
 	if visitor:
 		scenario = Scenario()
 		scenario.visitor = visitor
-		scenario.college = acefsm.college
-		scenario.alt = acefsm.alt
-		scenario.sec = acefsm.secondary
-		scenario.pick = acefsm.expected_pick.cell
-		scenario.pos = acefsm.position.index
-		scenario.status = acefsm.status.index
+		scenario.college = m.college
+		scenario.alt = m.alt
+		scenario.sec = m.secondary
+		scenario.pick = m.expected_pick.cell
+		scenario.pos = m.position.index
+		scenario.status = m.status.index
 		scenario.save()
 
 	# We might have a cookie:
 	salt = request.COOKIES.get('salt', '')
 	hash = request.COOKIES.get('hash', '')
 
-	context = {
-		'salt': salt,
-		'hash': hash,
-	}
-
 #	if 'salt' in request.COOKIES:
+
 #		if (hash != _hash_helper(salt)):
-#			return render(request, 'auth_error.html', context) 
+#			return render(request, 'auth_error.html', {'salt': salt, 'hash': hash}) 
 #	else:
-#		return render(request, 'auth_error.html', context)
+#		return render(request, 'auth_error.html', {'salt': salt, 'hash': hash}) 
 
 	if visitor:
 		scenario.anonymous = False
@@ -180,20 +175,20 @@ def output(request):
 	for y in range(0, TOTAL_YEARS):
 		table.append({
 			'year': y + datetime.datetime.now().year,
-			'pr_minors': acefsm.pr_minors[y],
-			'pr_out': acefsm.pr_out[y]
+			'pr_minors': m.pr_minors[y],
+			'pr_out': m.pr_out[y]
 		})
 
 	this_year = datetime.datetime.now().year
 	graph = [
 		{
 			'label': 'Earnings [Baseball]',
-			'data': [[y + this_year, acefsm.e_mlb[y]] for y in range(0, TOTAL_YEARS)],
+			'data': [[y + this_year, m.e_mlb[y]] for y in range(0, TOTAL_YEARS)],
 			'color': '#009900'
 		},
 		{
 			'label': 'Earnings [Alternate]',
-			'data': [[y + this_year, acefsm.e_alt[y]] for y in range(0, TOTAL_YEARS)],
+			'data': [[y + this_year, m.e_alt[y]] for y in range(0, TOTAL_YEARS)],
 			'color': '#CC0000'
 		}
 
@@ -202,13 +197,13 @@ def output(request):
 	years = [this_year + 2 * y + 1 for y in range(0, TOTAL_YEARS//2)]
 
 	context = {
-		'model': acefsm,
+		'model': m,
 		'table': table,
 		'graph': graph,
 		'years': years,
 	}
-
 	return render(request, 'output.html', context) 
+
 
 @staff_member_required
 def visitors(request):

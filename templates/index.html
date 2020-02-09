@@ -195,39 +195,7 @@ $(document).ready(function(){
             $('div#throbber').slideUp('fast');
             $('p#instructions').slideUp('fast');
             $('div#output_placeholder').slideDown('fast', function () {
-                render_plot()
-                {
-                    var data = [];
-                    var years = [];
-
-                    $('.tip').tooltip();
-
-                    $.plot(('#chart'), data,
-                    {
-
-                        series: {
-                            lines: { show:  true },
-                            points: { show: true }
-                        },
-                        xaxis: {
-                            label: 'Years',
-                            ticks: years,
-                            tickFormatter: function numberWithCommas(x)
-                            {
-                                return x.toString();
-                            }
-                        },
-                        yaxis: {
-                            label: 'Salary',
-                            tickFormatter: function numberWithCommas(x)
-                            {
-                                return '$' + x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
-                            }
-                        }
-
-                    });
-
-                };
+                render_plot();
             });
         });
 

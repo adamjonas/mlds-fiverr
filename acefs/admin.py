@@ -1,5 +1,5 @@
 from django.contrib.admin.options import ModelAdmin, TabularInline
-from .models import College, SlotBonus, MLBData, DOLSalary, PrMajorsData, SigningBonus, Visitor, Scenario
+from .models import College, SlotBonus, MLBData, DOLSalary, PrMajorsData, SigningBonus, Visitor, Scenario, PrOutPosition, PrOutStatus
 from django.contrib import admin
 
 class CollegeAdmin(ModelAdmin):
@@ -43,4 +43,7 @@ class VisitorAdmin(ModelAdmin):
     readonly_fields = ('modx_id','username','fullname','ip','user_agent')
     inlines = [ScenarioInline,]
 admin.site.register(Visitor, VisitorAdmin)
+
+admin.site.register(PrOutPosition)
+admin.site.register(PrOutStatus)
 

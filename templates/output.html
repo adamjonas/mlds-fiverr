@@ -77,39 +77,34 @@
 
 
 <script type="text/javascript">
-function render_plot()
-{
-    var data = [];
-    var years = [];
 
-    $('.tip').tooltip();
+    function render_plot(){
 
-    $.plot(('#chart'), data,
-    {
+        $('.tip').tooltip();
 
-        series: {
-            lines: { show:  true },
-            points: { show: true }
-        },
-        xaxis: {
-            label: 'Years',
-            ticks: years,
-            tickFormatter: function numberWithCommas(x)
-            {
-                return x.toString();
+        $.plot(('#chart'), {{ graph|safe }}, {
+
+            series: {
+                lines: { show:  true },
+                points: { show: true }
+            },
+            xaxis: {
+                label: 'Years',
+                ticks: {{  years }},
+                tickFormatter: function numberWithCommas(x) {
+                    return x.toString();
+                }
+            },
+            yaxis: {
+                label: 'Salary',
+                tickFormatter: function numberWithCommas(x) {
+                    return '$' + x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
+                }
             }
-        },
-        yaxis: {
-            label: 'Salary',
-            tickFormatter: function numberWithCommas(x)
-            {
-                return '$' + x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
-            }
-        }
 
-    });
+        });
 
-}
+    }
 
 
 </script>

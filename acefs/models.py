@@ -91,7 +91,7 @@ class PrMajorsData(models.Model):
     class Meta:
         verbose_name_plural = "PrMajorsData"
 
-    def __unicode__(self):
+    def __str__(self):
         return ("%s %s cell %d: %d" % (POSITION_CHOICES[self.position][1],
                                        STATUS_CHOICES[self.status][1],
                                        self.draft_cell,
@@ -144,7 +144,7 @@ class MLBData(models.Model):
     class Meta:
         verbose_name_plural = "MLBData"
 
-    def __unicode__(self):
+    def __str__(self):
         return ("%s %s cell %d year %d: %s"
                 % (POSITION_CHOICES[self.position][1],
                    STATUS_CHOICES[self.status][1],
@@ -170,7 +170,7 @@ class DOLSalary(models.Model):
     class Meta:
         verbose_name_plural = "DOLSalaries"
 
-    def __unicode__(self):
+    def __str__(self):
         return self.occupation
 
     def mean(self):
@@ -200,7 +200,7 @@ class College(models.Model):
     class Meta:
         verbose_name_plural = "Colleges"
 
-    def __unicode__(self):
+    def __str__(self):
         return self.school
 
 
@@ -222,7 +222,7 @@ class SlotBonus(models.Model):
     class Meta:
         verbose_name_plural = "SlotBonuses"
 
-    def __unicode__(self):
+    def __str__(self):
         return "Pick %d ($%d, cell %d) " % (self.pick, self.amount,
                                             self.draft_cell)
 
@@ -255,7 +255,7 @@ class SigningBonus(models.Model):
     class Meta:
         verbose_name_plural = "SigningBonuses"
 
-    def __unicode__(self):
+    def __str__(self):
         return ("Cell %d, status %s: $%d"
                 % (self.draft_cell,
                    STATUS_CHOICES[self.status][1],
@@ -290,7 +290,7 @@ class PrOutPosition(models.Model):
     class Meta:
         verbose_name_plural = "PrOutPositions"
 
-    def __unicode__(self):
+    def __str__(self):
         return ("Position %s, year %d: %s"
                 % (POSITION_CHOICES[self.position][1], self.year, self.value))
 
@@ -322,7 +322,7 @@ class PrOutStatus(models.Model):
     class Meta:
         verbose_name_plural = "PrOutStatuses"
 
-    def __unicode__(self):
+    def __str__(self):
         return "Status %s, year %d: %s" % (STATUS_CHOICES[self.status][1],
                                            self.year,
                                            self.value)
@@ -339,7 +339,7 @@ class Visitor(models.Model):
 
     # Reverse: scenarios
 
-    def __unicode__(self):
+    def __str__(self):
         if self.fullname:
             return self.fullname
         else:
@@ -374,8 +374,10 @@ class Scenario(models.Model):
         return 'http://example.com'
     
 
-    def __unicode__(self):
+    def __str__(self):
         fullname = self.visitor.fullname
         if not fullname:
             fullname = '(Anonymous)'
         return "%s %s" % (fullname, self.timestamp)
+
+        
