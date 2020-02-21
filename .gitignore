@@ -28,4 +28,3 @@ status
 
 *.sqlite3
 sftp-config.json
-debug.log
